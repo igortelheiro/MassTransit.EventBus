@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # ASP.NET
 # Build and test ASP.NET projects.
 # Add steps that publish symbols, save build artifacts, deploy, and more:
@@ -50,7 +49,7 @@ steps:
       command: "test"
       arguments: "--no-build --configuration $(buildConfiguration)"
       publishTestResults: true
-      projects: $(EventBusTests)
+      projects: $(Tests)
 
   - task: NuGetCommand@2
     displayName: "NuGet Pack"
@@ -67,80 +66,7 @@ steps:
     displayName: "NuGet Push"
     inputs:
       command: "push"
-      packagesToPush: "$(Build.ArtifactStagingDirectory)/*.nupkg"
+      packagesToPush: "$(Build.ArtifactStagingDirectory)/**/*.nupkg"
       nuGetFeedType: "internal"
-      publishVstsFeed: "384a3a9d-74bf-42a9-9f3a-8f372b39cc98"
+      publishVstsFeed: "360ba89a-1801-4850-9e40-b49110a639e5"
       allowPackageConflicts: true
-=======
-# ASP.NET
-# Build and test ASP.NET projects.
-# Add steps that publish symbols, save build artifacts, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/apps/aspnet/build-aspnet-4
-
-trigger:
-  branches:
-    include:
-      - master
-  paths:
-    include:
-      - MGR.Common.EventBus/*
-
-pool:
-  vmImage: "ubuntu-latest"
-
-variables:
-  buildConfiguration: "Release"
-  CommonEventBusProjects: "**/MGR.Common.EventBus/**/*.csproj"
-  CommonEventBusTests: "**/MGR.Common.EventBus/**/*Test*.csproj"
-  CommonEventBusPackages: $(CommonEventBusProjects);!$(CommonEventBusTests)
-  CommonEventBusVersion: 3.0
-
-name: $(CommonEventBusVersion)$(Rev:.r)
-
-steps:
-  - task: UseDotNet@2
-    displayName: "Use .Net 5"
-    inputs:
-      version: "5.0.x"
-
-  - task: DotNetCoreCLI@2
-    displayName: "NuGet Restore"
-    inputs:
-      command: "restore"
-      projects: $(CommonEventBusProjects)
-
-  - task: DotNetCoreCLI@2
-    displayName: "Build $(buildConfiguration)"
-    inputs:
-      command: "build"
-      projects: $(CommonEventBusProjects)
-      arguments: "--configuration $(buildConfiguration)"
-
-  - task: DotNetCoreCLI@2
-    displayName: "Run Unit Tests - $(buildConfiguration)"
-    inputs:
-      command: "test"
-      arguments: "--no-build --configuration $(buildConfiguration)"
-      publishTestResults: true
-      projects: $(CommonEventBusTests)
-
-  - task: NuGetCommand@2
-    displayName: "NuGet Pack"
-    inputs:
-      command: pack
-      packagesToPack: $(CommonEventBusPackages)
-      packDestination: "$(Build.ArtifactStagingDirectory)"
-      versioningScheme: byBuildNumber
-
-  - task: NuGetAuthenticate@0
-    displayName: "NuGet Authenticate"
-
-  - task: NuGetCommand@2
-    displayName: "NuGet Push"
-    inputs:
-      command: "push"
-      packagesToPush: "$(Build.ArtifactStagingDirectory)/*.nupkg"
-      nuGetFeedType: "internal"
-      publishVstsFeed: "384a3a9d-74bf-42a9-9f3a-8f372b39cc98"
-      allowPackageConflicts: true
->>>>>>> 416446c2c716beacef2f9365c351e3dc38b42513
