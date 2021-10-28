@@ -62,6 +62,15 @@ steps:
   - task: NuGetAuthenticate@0
     displayName: "NuGet Authenticate"
 
+  - task: NuGetCommand@2
+    displayName: "NuGet Push"
+    inputs:
+      command: "push"
+      packagesToPush: "$(Build.ArtifactStagingDirectory)/*.nupkg"
+      nuGetFeedType: "internal"
+      publishVstsFeed: "360ba89a-1801-4850-9e40-b49110a639e5"
+      allowPackageConflicts: true
+  
   - task: PublishBuildArtifacts@1
     inputs:
       pathToPublish: $(Build.ArtifactStagingDirectory)
