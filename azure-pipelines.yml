@@ -9,14 +9,14 @@ trigger:
       - main
   paths:
     include:
-      - MGR.RabbitMQEventBus/*
+      - RabbitMessageBus/*
 
 pool:
   vmImage: "ubuntu-latest"
 
 variables:
   buildConfiguration: "Release"
-  PackageName: "MGR.EventBus"
+  PackageName: "RabbitMessageBus"
   Projects: "**/*.csproj"
   Tests: "**/*Test*.csproj"
   Packages: $(Projects);!$(Tests)
