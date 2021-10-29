@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using MGR.EventBus.Events;
-using static MGR.EventBus.InMemoryEventBusSubscriptionsManager;
+using EventBus.Core.Events;
+using static EventBus.Core.InMemoryEventBusSubscriptionsManager;
 
-namespace MGR.EventBus.Interfaces
+namespace EventBus.Core.Interfaces
 {
     public interface IEventBusSubscriptionsManager
     {

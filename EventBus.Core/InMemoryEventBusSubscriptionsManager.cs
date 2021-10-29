@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using MGR.EventBus.Events;
-using MGR.EventBus.Interfaces;
+using EventBus.Core.Events;
+using EventBus.Core.Interfaces;
 
-namespace MGR.EventBus
+namespace EventBus.Core
 {
     public partial class InMemoryEventBusSubscriptionsManager : IEventBusSubscriptionsManager
     {

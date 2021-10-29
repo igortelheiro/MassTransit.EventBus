@@ -1,4 +1,4 @@
-﻿namespace MGR.IntegrationEventLogEF
+﻿namespace IntegrationEventLogEF
 {
     public enum EventStateEnum
     {

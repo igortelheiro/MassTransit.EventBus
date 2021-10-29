@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Threading;
+using EventBus.Core.Interfaces;
 using MassTransit;
-using MGR.EventBus.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace MGR.RabbitMQEventBus.Configuration
+namespace RabbitMQEventBus.Configuration
 {
     public static class RabbitMQEventBusConfiguration
     {
@@ -12,7 +12,7 @@ namespace MGR.RabbitMQEventBus.Configuration
         {
             var busControl = ConfigureEventBusFactory();
 
-            services.AddSingleton<IBusControl>(busControl);
+            services.AddSingleton(busControl);
             services.AddSingleton<IBus>(provider => provider.GetRequiredService<IBusControl>());
             services.AddSingleton<IEventBus, MassTransitEventBus>();
 

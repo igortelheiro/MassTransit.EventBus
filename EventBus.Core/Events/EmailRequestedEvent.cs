@@ -1,4 +1,4 @@
-﻿namespace MGR.EventBus.Events
+﻿namespace EventBus.Core.Events
 {
     public record EmailRequestedEvent : IntegrationEvent
     {

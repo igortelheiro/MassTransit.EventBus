@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace MGR.IntegrationEventLogEF
+namespace IntegrationEventLogEF
 {
     public class IntegrationEventLogContext : DbContext
     {

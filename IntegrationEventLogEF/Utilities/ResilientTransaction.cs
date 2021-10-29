@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
-namespace MGR.IntegrationEventLogEF.Utilities
+namespace IntegrationEventLogEF.Utilities
 {
     public class ResilientTransaction
     {

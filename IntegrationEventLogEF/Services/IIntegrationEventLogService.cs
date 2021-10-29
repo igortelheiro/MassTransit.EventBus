@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using MGR.EventBus.Events;
+using EventBus.Core.Events;
 using Microsoft.EntityFrameworkCore.Storage;
 
-namespace MGR.IntegrationEventLogEF.Services
+namespace IntegrationEventLogEF.Services
 {
     public interface IIntegrationEventLogService
     {

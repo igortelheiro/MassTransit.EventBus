@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
-using MGR.EventBus.Interfaces;
+using EventBus.Core.Interfaces;
 
-namespace MGR.EventBus.Tests
+namespace EventBus.Tests
 {
     public class TestIntegrationEventHandler : IIntegrationEventHandler<TestIntegrationEvent>
     {

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
+using EventBus.Core.Events;
+using EventBus.Core.Interfaces;
 using MassTransit;
-using MGR.EventBus.Events;
-using MGR.EventBus.Interfaces;
 
-namespace MGR.RabbitMQEventBus
+namespace RabbitMQEventBus
 {
     public class MassTransitConsumer<TMessage> : IConsumer<TMessage>
         where TMessage : IntegrationEvent

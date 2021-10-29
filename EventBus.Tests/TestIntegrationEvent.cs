@@ -1,6 +1,6 @@
-﻿using MGR.EventBus.Events;
+﻿using EventBus.Core.Events;
 
-namespace MGR.EventBus.Tests
+namespace EventBus.Tests
 {
     public record TestIntegrationEvent : IntegrationEvent
     {

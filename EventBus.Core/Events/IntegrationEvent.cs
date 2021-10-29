@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text.Json.Serialization;
 
-namespace MGR.EventBus.Events
+namespace EventBus.Core.Events
 {
     public record IntegrationEvent
     {        

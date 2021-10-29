@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using EventBus.Core.Events;
+using EventBus.Core.Interfaces;
 using GreenPipes;
 using MassTransit;
-using MGR.EventBus.Events;
-using MGR.EventBus.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace MGR.RabbitMQEventBus
+namespace RabbitMQEventBus
 {
     public class MassTransitEventBus : IEventBus
     {

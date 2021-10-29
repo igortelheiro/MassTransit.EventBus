@@ -1,7 +1,7 @@
 ﻿using System;
-using MGR.EventBus.Interfaces;
+using EventBus.Core.Interfaces;
 
-namespace MGR.EventBus
+namespace EventBus.Core
 {
     public partial class InMemoryEventBusSubscriptionsManager : IEventBusSubscriptionsManager
     {

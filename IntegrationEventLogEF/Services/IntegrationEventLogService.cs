@@ -4,11 +4,11 @@ using System.Data.Common;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using MGR.EventBus.Events;
+using EventBus.Core.Events;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 
-namespace MGR.IntegrationEventLogEF.Services
+namespace IntegrationEventLogEF.Services
 {
     public class IntegrationEventLogService : IIntegrationEventLogService, IDisposable
     {

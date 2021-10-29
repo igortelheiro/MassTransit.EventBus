@@ -1,7 +1,8 @@
 using System.Linq;
+using EventBus.Core;
 using Xunit;
 
-namespace MGR.EventBus.Tests
+namespace EventBus.Tests
 {
     public class InMemory_SubscriptionManager_Tests
     {

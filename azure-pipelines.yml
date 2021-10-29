@@ -13,11 +13,11 @@ pool:
 
 variables:
   buildConfiguration: "Release"
-  PackageName: "MGR.EventBus"
+  PackageName: "RabbitMessageBus"
   Projects: "**/*.csproj"
   Tests: "**/*Test*.csproj"
   Packages: $(Projects);!$(Tests)
-  Version: 2.0
+  Version: 1.0
 
 name: $(Version)$(Rev:.r)
 

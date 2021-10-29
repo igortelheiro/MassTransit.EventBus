@@ -2,9 +2,9 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text.Json;
-using MGR.EventBus.Events;
+using EventBus.Core.Events;
 
-namespace MGR.IntegrationEventLogEF
+namespace IntegrationEventLogEF
 {
     public class IntegrationEventLogEntry
     {

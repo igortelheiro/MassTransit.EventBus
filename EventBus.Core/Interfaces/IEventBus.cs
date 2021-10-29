@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
-using MGR.EventBus.Events;
+using EventBus.Core.Events;
 
-namespace MGR.EventBus.Interfaces
+namespace EventBus.Core.Interfaces
 {
     public interface IEventBus
     {

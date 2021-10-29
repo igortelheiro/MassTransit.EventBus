@@ -1,7 +1,7 @@
-﻿using MGR.EventBus.Interfaces;
+﻿using EventBus.Core.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace MGR.EventBus.Configuration
+namespace EventBus.Core.Configuration
 {
     public static class EventBusConfiguration
     {
