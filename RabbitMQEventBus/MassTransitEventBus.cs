@@ -46,10 +46,6 @@ namespace RabbitMQEventBus
                     });
 
                 var handler = _serviceProvider.GetRequiredService<IIntegrationEventHandler<T>>();
-                if (handler == null)
-                {
-                    throw new ArgumentException($"Nenhum handler registrado para: {typeof(T).Name}");
-                }
                 var consumer = new MassTransitConsumer<T>(handler);
                 config.Consumer(consumer.GetType(), _ => consumer);
             });
