@@ -13,7 +13,7 @@ pool:
 
 variables:
   buildConfiguration: "Release"
-  PackageName: "RabbitMessageBus"
+  PackageName: "RabbitMQEventBus"
   Projects: "**/*.csproj"
   Tests: "**/*Test*.csproj"
   Packages: $(Projects);!$(Tests)
