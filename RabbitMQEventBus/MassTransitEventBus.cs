@@ -26,7 +26,7 @@ namespace MGR.RabbitMQEventBus
         public async Task Publish<TEvent>(TEvent @event)
             where TEvent : IntegrationEvent
         {
-            var source = new CancellationTokenSource(TimeSpan.FromSeconds(10));
+            var source = new CancellationTokenSource(TimeSpan.FromSeconds(30));
             await _bus.Publish(@event, source.Token);
         }
 
@@ -35,13 +35,14 @@ namespace MGR.RabbitMQEventBus
             where T : IntegrationEvent
             where TH : IIntegrationEventHandler<T>
         {
-            _bus.ConnectReceiveEndpoint(typeof(TH).Name, e =>
+            _bus.ConnectReceiveEndpoint(typeof(TH).Name, config =>
             {
-                e.UseMessageRetry(r =>
+                config.UseMessageRetry(r =>
                     {
                         r.Ignore<ArgumentException>();
                         r.Ignore<TimeoutException>();
                         r.Immediate(5);
+                        r.Interval(3, TimeSpan.FromSeconds(5));
                     });
 
                 var handler = _serviceProvider.GetRequiredService<IIntegrationEventHandler<T>>();
@@ -50,7 +51,7 @@ namespace MGR.RabbitMQEventBus
                     throw new ArgumentException($"Nenhum handler registrado para: {typeof(T).Name}");
                 }
                 var consumer = new MassTransitConsumer<T>(handler);
-                e.Consumer(consumer.GetType(), _ => consumer);
+                config.Consumer(consumer.GetType(), _ => consumer);
             });
         }
     }

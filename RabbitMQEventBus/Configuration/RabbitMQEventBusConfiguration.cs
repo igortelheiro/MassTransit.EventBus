@@ -30,7 +30,7 @@ namespace MGR.RabbitMQEventBus.Configuration
                         h.Username("guest");
                         h.Password("guest");
                         h.RequestedChannelMax(30);
-                        h.RequestedConnectionTimeout(TimeSpan.FromSeconds(10));
+                        h.RequestedConnectionTimeout(TimeSpan.FromSeconds(30));
                     });
                 });
     }
