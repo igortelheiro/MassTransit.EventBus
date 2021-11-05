@@ -5,7 +5,7 @@ namespace EventBus.Core.Interfaces
 {
     public interface IEventBus
     {
-        Task Publish<TEvent>(TEvent @event)
+        Task PublishAsync<TEvent>(TEvent @event)
             where TEvent : IntegrationEvent;
 
         void Subscribe<T, TH>()

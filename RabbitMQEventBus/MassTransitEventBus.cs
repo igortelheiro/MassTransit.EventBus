@@ -1,47 +1,40 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using EventBus.Core.Events;
-using EventBus.Core.Interfaces;
+﻿using EventBus.Core.Interfaces;
 using GreenPipes;
+using IntegrationEventLogEF;
 using MassTransit;
 using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Threading.Tasks;
 
 namespace RabbitMQEventBus
 {
-    public class MassTransitEventBus : IEventBus
+    public class MassTransitEventBus : LoggingEventBus
     {
-        #region Initialize
         private readonly IBus _bus;
         private readonly IServiceProvider _serviceProvider;
 
         public MassTransitEventBus(IBus bus, IServiceProvider serviceProvider)
+            : base(serviceProvider)
         {
-            _bus = bus;
-            _serviceProvider = serviceProvider;
-        }
-        #endregion
-
-
-        public async Task Publish<TEvent>(TEvent @event)
-            where TEvent : IntegrationEvent
-        {
-            var source = new CancellationTokenSource(TimeSpan.FromSeconds(30));
-            await _bus.Publish(@event, source.Token);
+            _bus = bus ?? throw new ArgumentNullException(nameof(bus));
+            _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
         }
 
 
-        public void Subscribe<T, TH>()
-            where T : IntegrationEvent
-            where TH : IIntegrationEventHandler<T>
-        {
+        public override async Task PublishAsync<TEvent>(TEvent @event) =>
+            await LogAndPublishAsync(@event, async cancellationToken =>
+            {
+                await _bus.Publish(@event, cancellationToken);
+            });
+
+
+        public override void Subscribe<T, TH>() =>
             _bus.ConnectReceiveEndpoint(typeof(TH).Name, config =>
             {
                 config.UseMessageRetry(r =>
                     {
                         r.Ignore<ArgumentException>();
                         r.Ignore<TimeoutException>();
-                        r.Immediate(5);
                         r.Interval(3, TimeSpan.FromSeconds(5));
                     });
 
@@ -49,6 +42,5 @@ namespace RabbitMQEventBus
                 var consumer = new MassTransitConsumer<T>(handler);
                 config.Consumer(consumer.GetType(), _ => consumer);
             });
-        }
     }
 }

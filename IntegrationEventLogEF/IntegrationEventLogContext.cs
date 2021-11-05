@@ -1,9 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System;
 
 namespace IntegrationEventLogEF
 {
-    public class IntegrationEventLogContext : DbContext
+    public sealed class IntegrationEventLogContext : DbContext
     {
         public IntegrationEventLogContext(DbContextOptions<IntegrationEventLogContext> options) : base(options)
         {
@@ -16,7 +17,7 @@ namespace IntegrationEventLogEF
             builder.Entity<IntegrationEventLogEntry>(ConfigureIntegrationEventLogEntry);
         }
 
-        void ConfigureIntegrationEventLogEntry(EntityTypeBuilder<IntegrationEventLogEntry> builder)
+        private void ConfigureIntegrationEventLogEntry(EntityTypeBuilder<IntegrationEventLogEntry> builder)
         {
             builder.ToTable("IntegrationEventLog");
 
@@ -32,10 +33,10 @@ namespace IntegrationEventLogEF
                 .IsRequired();
 
             builder.Property(e => e.State)
-                .IsRequired();
-
-            builder.Property(e => e.TimesSent)
-                .IsRequired();
+                .IsRequired()
+                .HasConversion(
+                    v => v.ToString(),
+                    v => Enum.Parse<EventStateEnum>(v));
 
             builder.Property(e => e.EventTypeName)
                 .IsRequired();

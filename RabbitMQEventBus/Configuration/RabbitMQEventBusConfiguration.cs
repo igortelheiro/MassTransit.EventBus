@@ -1,8 +1,9 @@
-﻿using System;
-using System.Threading;
-using EventBus.Core.Interfaces;
+﻿using EventBus.Core.Interfaces;
+using IntegrationEventLogEF.Configuration;
 using MassTransit;
 using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Threading;
 
 namespace RabbitMQEventBus.Configuration
 {
@@ -10,19 +11,19 @@ namespace RabbitMQEventBus.Configuration
     {
         public static void ConfigureRabbitMQEventBus(this IServiceCollection services)
         {
-            var busControl = ConfigureEventBusFactory();
+            services.ConfigureIntegrationEventLog();
 
-            services.AddSingleton(busControl);
-            services.AddSingleton<IBus>(provider => provider.GetRequiredService<IBusControl>());
-            services.AddSingleton<IEventBus, MassTransitEventBus>();
+            var busControl = BuildEventBus();
+
+            services.AddScoped<IEventBus>(provider => new MassTransitEventBus(busControl, provider));
 
             //TODO: Use IHostedService to control bus lifetime
-            var source = new CancellationTokenSource(TimeSpan.FromSeconds(10));
-            busControl.StartAsync(source.Token);
+            var cancellationToken = new CancellationTokenSource(TimeSpan.FromSeconds(20)).Token;
+            busControl.StartAsync(cancellationToken);
         }
 
 
-        private static IBusControl ConfigureEventBusFactory() =>
+        private static IBusControl BuildEventBus() =>
             Bus.Factory.CreateUsingRabbitMq(cfg =>
                 {
                     cfg.Host("localhost", "/", h =>
@@ -30,7 +31,7 @@ namespace RabbitMQEventBus.Configuration
                         h.Username("guest");
                         h.Password("guest");
                         h.RequestedChannelMax(30);
-                        h.RequestedConnectionTimeout(TimeSpan.FromSeconds(30));
+                        h.RequestedConnectionTimeout(TimeSpan.FromSeconds(20));
                     });
                 });
     }

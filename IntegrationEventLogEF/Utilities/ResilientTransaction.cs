@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
@@ -6,23 +7,34 @@ namespace IntegrationEventLogEF.Utilities
 {
     public class ResilientTransaction
     {
-        private DbContext _context;
+        private readonly DbContext _context;
+
         private ResilientTransaction(DbContext context) =>
             _context = context ?? throw new ArgumentNullException(nameof(context));
 
+
         public static ResilientTransaction New(DbContext context) => new(context);
 
-        public async Task ExecuteAsync(Func<Task> action)
+
+        public async Task ExecuteAsync(Func<CancellationToken, Task> action)
         {
-            //Use of an EF Core resiliency strategy when using multiple DbContexts within an explicit BeginTransaction():
-            //See: https://docs.microsoft.com/en-us/ef/core/miscellaneous/connection-resiliency
             var strategy = _context.Database.CreateExecutionStrategy();
             await strategy.ExecuteAsync(async () =>
             {
-                using (var transaction = _context.Database.BeginTransaction())
+                var cancellationToken = new CancellationTokenSource(TimeSpan.FromSeconds(15)).Token;
+                //await using (var transaction = await _context.Database.BeginTransactionAsync(cancellationToken))
+                await using (var transaction = await _context.Database.BeginTransactionAsync(cancellationToken))
                 {
-                    await action();
-                    transaction.Commit();
+                    try
+                    {
+                        await action(cancellationToken);
+                        await transaction.CommitAsync(cancellationToken);
+                    }
+                    catch
+                    {
+                        await transaction.RollbackAsync(cancellationToken);
+                        throw;
+                    }
                 }
             });
         }

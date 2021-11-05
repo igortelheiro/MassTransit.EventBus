@@ -3,8 +3,7 @@
     public enum EventStateEnum
     {
         NotPublished = 0,
-        InProgress = 1,
-        Published = 2,
-        PublishedFailed = 3
+        Published = 1,
+        PublishFailed = 2
     }
 }
