@@ -50,14 +50,12 @@ namespace IntegrationEventLogEF
             try
             {
                 await _logContext.SaveChangesAsync(cancellationToken);
-                await _logService.SaveEventAsync(@event, transaction, cancellationToken);
-                await transaction.CreateSavepointAsync("eventSaved", cancellationToken);
+                await _logService.SaveEventLogAsync(@event, transaction.TransactionId, cancellationToken);
                 await publisher(cancellationToken);
                 await _logService.MarkEventAsPublishedAsync(@event.Id, cancellationToken);
             }
             catch
             {
-                await transaction.RollbackToSavepointAsync("eventSaved", cancellationToken);
                 await _logService.MarkEventPublishAsFailedAsync(@event.Id, cancellationToken);
             }
         }

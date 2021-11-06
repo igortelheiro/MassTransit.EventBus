@@ -1,11 +1,9 @@
 ﻿using EventBus.Core.Events;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -40,11 +38,9 @@ namespace IntegrationEventLogEF.Services
         }
 
 
-        public async Task SaveEventAsync(IntegrationEvent @event, IDbContextTransaction transaction, CancellationToken cancellationToken)
+        public async Task SaveEventLogAsync(IntegrationEvent @event, Guid transactionId, CancellationToken cancellationToken)
         {
-            if (transaction == null) throw new ArgumentNullException(nameof(transaction));
-
-            var eventLogEntry = new IntegrationEventLogEntry(@event, transaction.TransactionId);
+            var eventLogEntry = new IntegrationEventLogEntry(@event, transactionId);
 
             await _integrationEventLogContext.IntegrationEventLogs.AddAsync(eventLogEntry, cancellationToken);
 
