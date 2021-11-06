@@ -32,29 +32,32 @@ namespace IntegrationEventLogEF
             if (currentTransaction == null)
             {
                 await ResilientTransaction.New(_logContext).ExecuteAsync(async cancellationToken =>
-                    await SaveEventLogAndPublishAsync(@event, publisher, cancellationToken));
+                    await SaveEventLogAndPublishAsync(@event, publisher, _logContext.Database.CurrentTransaction, cancellationToken));
                 return;
             }
             
             var cancellationToken = new CancellationTokenSource(TimeSpan.FromSeconds(20)).Token;
             await _logContext.Database.UseTransactionAsync(currentTransaction.GetDbTransaction(), cancellationToken);
-            await SaveEventLogAndPublishAsync(@event, publisher, cancellationToken);
+            await SaveEventLogAndPublishAsync(@event, publisher, currentTransaction, cancellationToken);
         }
 
 
         private async Task SaveEventLogAndPublishAsync<TEvent>(TEvent @event,
                                                                Func<CancellationToken, Task> publisher,
+                                                               IDbContextTransaction transaction,
                                                                CancellationToken cancellationToken) where TEvent : IntegrationEvent
         {
             try
             {
                 await _logContext.SaveChangesAsync(cancellationToken);
-                await _logService.SaveEventAsync(@event, _logContext.Database.CurrentTransaction, cancellationToken);
+                await _logService.SaveEventAsync(@event, transaction, cancellationToken);
+                await transaction.CreateSavepointAsync("eventSaved", cancellationToken);
                 await publisher(cancellationToken);
                 await _logService.MarkEventAsPublishedAsync(@event.Id, cancellationToken);
             }
             catch
             {
+                await transaction.RollbackToSavepointAsync("eventSaved", cancellationToken);
                 await _logService.MarkEventPublishAsFailedAsync(@event.Id, cancellationToken);
             }
         }

@@ -22,7 +22,6 @@ namespace IntegrationEventLogEF.Utilities
             await strategy.ExecuteAsync(async () =>
             {
                 var cancellationToken = new CancellationTokenSource(TimeSpan.FromSeconds(15)).Token;
-                //await using (var transaction = await _context.Database.BeginTransactionAsync(cancellationToken))
                 await using (var transaction = await _context.Database.BeginTransactionAsync(cancellationToken))
                 {
                     try

@@ -35,7 +35,7 @@ namespace RabbitMQEventBus
                     {
                         r.Ignore<ArgumentException>();
                         r.Ignore<TimeoutException>();
-                        r.Interval(3, TimeSpan.FromSeconds(5));
+                        r.Immediate(3);
                     });
 
                 var handler = _serviceProvider.GetRequiredService<IIntegrationEventHandler<T>>();
