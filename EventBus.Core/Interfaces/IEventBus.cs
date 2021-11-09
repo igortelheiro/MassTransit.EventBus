@@ -5,6 +5,8 @@ namespace EventBus.Core.Interfaces
 {
     public interface IEventBus
     {
+        //TODO: implementar params (usando MassTransit.TransactionalEnlistmentBus)
+        //Task PublishAsync<TEvent>(params TEvent[] @event)
         Task PublishAsync<TEvent>(TEvent @event)
             where TEvent : IntegrationEvent;
 
