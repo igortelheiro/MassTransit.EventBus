@@ -5,34 +5,33 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Threading;
 
-namespace RabbitMQEventBus.Configuration
+namespace RabbitMQEventBus.Configuration;
+
+public static class RabbitMQEventBusConfiguration
 {
-    public static class RabbitMQEventBusConfiguration
+    public static void ConfigureRabbitMQEventBus(this IServiceCollection services)
     {
-        public static void ConfigureRabbitMQEventBus(this IServiceCollection services)
-        {
-            services.ConfigureIntegrationEventLog();
+        services.ConfigureIntegrationEventLog();
 
-            var busControl = BuildEventBus();
+        var busControl = BuildEventBus();
 
-            services.AddScoped<IEventBus>(provider => new MassTransitEventBus(busControl, provider));
+        services.AddScoped<IEventBus>(provider => new MassTransitEventBus(busControl, provider));
 
-            //TODO: Use IHostedService to control bus lifetime
-            var cancellationToken = new CancellationTokenSource(TimeSpan.FromSeconds(20)).Token;
-            busControl.StartAsync(cancellationToken);
-        }
-
-
-        private static IBusControl BuildEventBus() =>
-            Bus.Factory.CreateUsingRabbitMq(cfg =>
-                {
-                    cfg.Host("localhost", "/", h =>
-                    {
-                        h.Username("guest");
-                        h.Password("guest");
-                        h.RequestedChannelMax(30);
-                        h.RequestedConnectionTimeout(TimeSpan.FromSeconds(20));
-                    });
-                });
+        //TODO: Use IHostedService to control bus lifetime
+        var cancellationToken = new CancellationTokenSource(TimeSpan.FromSeconds(20)).Token;
+        busControl.StartAsync(cancellationToken);
     }
+
+
+    private static IBusControl BuildEventBus() =>
+        Bus.Factory.CreateUsingRabbitMq(cfg =>
+            {
+                cfg.Host("localhost", "/", h =>
+                {
+                    h.Username("guest");
+                    h.Password("guest");
+                    h.RequestedChannelMax(30);
+                    h.RequestedConnectionTimeout(TimeSpan.FromSeconds(20));
+                });
+            });
 }

@@ -5,9 +5,7 @@ namespace EventBus.Core.Configuration
 {
     public static class EventBusConfiguration
     {
-        public static void ConfigureEventBusSubscriptionManager(this IServiceCollection services)
-        {
+        public static void ConfigureEventBusSubscriptionManager(this IServiceCollection services) =>
             services.AddSingleton<IEventBusSubscriptionsManager, InMemoryEventBusSubscriptionsManager>();
-        }
     }
 }
