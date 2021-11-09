@@ -18,9 +18,9 @@ name: $(Version)$(Rev:.r)
 
 steps:
   - task: UseDotNet@2
-    displayName: "Use .Net 5"
+    displayName: "Use .Net 6"
     inputs:
-      version: "5.0.x"
+      version: "6.0.x"
 
   - task: DotNetCoreCLI@2
     displayName: "NuGet Restore"
