@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace RabbitMQEventBus;
 
-public class MassTransitEventBus : LoggingEventBus
+internal class MassTransitEventBus : LoggingEventBus
 {
     private readonly IBus _bus;
     private readonly IServiceProvider _serviceProvider;

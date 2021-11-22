@@ -1,16 +1,12 @@
 ﻿using EventBus.Core.Interfaces;
-using IntegrationEventLogEF.Configuration;
 using MassTransit;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace RabbitMQEventBus.Configuration;
 
-public static class RabbitMQEventBusConfiguration
+public static class AzureEventBusConfiguration
 {
-    public static async Task ConfigureRabbitMQEventBus(this IServiceCollection services)
+    public static async Task ConfigureAzureEventBus(this IServiceCollection services)
     {
         //services.ConfigureIntegrationEventLog();
 
@@ -25,14 +21,10 @@ public static class RabbitMQEventBusConfiguration
 
 
     private static IBusControl BuildEventBus() =>
-        Bus.Factory.CreateUsingRabbitMq(cfg =>
+        Bus.Factory.CreateUsingAzureServiceBus(cfg =>
             {
-                cfg.Host("localhost", "/", h =>
+                cfg.Host("Endpoint=sb://mgr-masstransit.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=bmmu9YRn9Ms+YTsMDI0TDl92bF/UHF5vnG0gVu0Pcgg=", h =>
                 {
-                    h.Username("guest");
-                    h.Password("guest");
-                    h.RequestedChannelMax(30);
-                    h.RequestedConnectionTimeout(TimeSpan.FromSeconds(20));
                 });
             });
 }
