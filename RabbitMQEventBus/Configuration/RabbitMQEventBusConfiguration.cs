@@ -1,6 +1,7 @@
 ﻿using EventBus.Core.Interfaces;
 using IntegrationEventLogEF.Configuration;
 using MassTransit;
+using MassTransit.EventBus.Core;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Threading;
@@ -12,7 +13,7 @@ public static class RabbitMQEventBusConfiguration
 {
     public static async Task ConfigureRabbitMQEventBus(this IServiceCollection services)
     {
-        //services.ConfigureIntegrationEventLog();
+        services.ConfigureIntegrationEventLog();
 
         var busControl = BuildEventBus();
 

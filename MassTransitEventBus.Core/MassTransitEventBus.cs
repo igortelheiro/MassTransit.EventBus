@@ -4,9 +4,9 @@ using GreenPipes;
 using MassTransit;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace RabbitMQEventBus;
+namespace MassTransit.EventBus.Core;
 
-internal class MassTransitEventBus : IEventBus
+public sealed class MassTransitEventBus : IEventBus
 {
     private readonly IBus _bus;
     private readonly IServiceProvider _serviceProvider;

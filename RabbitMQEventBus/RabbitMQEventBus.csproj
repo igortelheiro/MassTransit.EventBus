@@ -17,6 +17,7 @@
   <ItemGroup>
     <ProjectReference Include="..\EventBus.Core\EventBus.Core.csproj" />
     <ProjectReference Include="..\IntegrationEventLogEF\IntegrationEventLogEF.csproj" />
+    <ProjectReference Include="..\MassTransitEventBus.Core\MassTransit.EventBus.Core.csproj" />
   </ItemGroup>
 
 </Project>

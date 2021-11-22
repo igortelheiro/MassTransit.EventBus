@@ -8,7 +8,7 @@ public class IntegrationEventLogContextFactory : IDesignTimeDbContextFactory<Int
     public IntegrationEventLogContext CreateDbContext(string[] args)
     {
         var optionsBuilder = new DbContextOptionsBuilder<IntegrationEventLogContext>();
-        optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=PortariaLogin");
+        optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=DbTest");
 
         return new IntegrationEventLogContext(optionsBuilder.Options);
     }
