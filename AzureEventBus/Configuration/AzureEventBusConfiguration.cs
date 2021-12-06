@@ -10,6 +10,7 @@ public static class AzureEventBusConfiguration
     public static async Task ConfigureAzureEventBus(this IServiceCollection services)
     {
         //services.ConfigureIntegrationEventLog();
+
         var busControl = BuildEventBus();
         services.AddScoped<IEventBus>(provider => new MassTransitEventBus(busControl, provider));
 

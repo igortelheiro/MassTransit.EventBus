@@ -26,7 +26,7 @@ public sealed class MassTransitEventBus : IEventBus
     public void Subscribe<T, TH>()
         where T : IntegrationEvent
         where TH : IIntegrationEventHandler<T> =>
-            _bus.ConnectReceiveEndpoint(typeof(TH).Name, config =>
+            _bus.ConnectReceiveEndpoint(config =>
             {
                 config.UseMessageRetry(r =>
                     {
