@@ -20,7 +20,7 @@ public sealed class MassTransitEventBus : IEventBus
 
     public async Task PublishAsync<TEvent>(TEvent @event)
         where TEvent : IntegrationEvent =>
-            await _bus.Publish(@event);
+            await _bus.Publish(@event).ConfigureAwait(false);
 
 
     public void Subscribe<T, TH>()
@@ -31,7 +31,6 @@ public sealed class MassTransitEventBus : IEventBus
                 config.UseMessageRetry(r =>
                     {
                         r.Ignore<ArgumentException>();
-                        r.Ignore<TimeoutException>();
                         r.Immediate(3);
                     });
 

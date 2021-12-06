@@ -1,6 +1,5 @@
 ﻿using EventBus.Core.Events;
 using EventBus.Core.Interfaces;
-using MassTransit;
 
 namespace MassTransit.EventBus.Core;
 
@@ -14,5 +13,5 @@ public sealed class MassTransitConsumer<TMessage> : IConsumer<TMessage>
 
 
     public async Task Consume(ConsumeContext<TMessage> context) =>
-        await _handler.Handle(context.Message);
+        await _handler.Handle(context.Message).ConfigureAwait(false);
 }

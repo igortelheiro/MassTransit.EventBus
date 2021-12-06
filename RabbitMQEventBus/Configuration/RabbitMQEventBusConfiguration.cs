@@ -1,5 +1,4 @@
 ﻿using EventBus.Core.Interfaces;
-using IntegrationEventLogEF.Configuration;
 using MassTransit;
 using MassTransit.EventBus.Core;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,15 +12,20 @@ public static class RabbitMQEventBusConfiguration
 {
     public static async Task ConfigureRabbitMQEventBus(this IServiceCollection services)
     {
-        services.ConfigureIntegrationEventLog();
+        //services.ConfigureIntegrationEventLog();
 
         var busControl = BuildEventBus();
-
         services.AddScoped<IEventBus>(provider => new MassTransitEventBus(busControl, provider));
 
-        //TODO: Use IHostedService to control bus lifetime
-        var cancellationToken = new CancellationTokenSource(TimeSpan.FromSeconds(20)).Token;
-        await busControl.StartAsync(cancellationToken).ConfigureAwait(false);
+        try
+        {
+            var cancellationToken = new CancellationTokenSource(TimeSpan.FromSeconds(20)).Token;
+            await busControl.StartAsync(cancellationToken).ConfigureAwait(false);
+        }
+        finally
+        {
+            await busControl.StopAsync().ConfigureAwait(false);
+        }
     }
 
 
