@@ -1,8 +1,6 @@
 ﻿using MassTransit;
 using MassTransit.EventBus.Core;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Threading.Tasks;
 
 namespace RabbitMQEventBus.Configuration;
 
