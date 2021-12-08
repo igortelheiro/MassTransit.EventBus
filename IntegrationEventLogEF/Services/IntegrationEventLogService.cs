@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Data.Common;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,18 +11,12 @@ namespace IntegrationEventLogEF.Services
     public class IntegrationEventLogService : IIntegrationEventLogService, IDisposable
     {
         private readonly IntegrationEventLogContext _integrationEventLogContext;
-        private volatile DbConnection _dbConnection;
         private readonly List<Type> _eventTypes;
         private volatile bool _disposedValue;
 
-        public IntegrationEventLogService(DbConnection dbConnection)
+        public IntegrationEventLogService(IntegrationEventLogContext dbContext)
         {
-            _dbConnection = dbConnection ?? throw new ArgumentNullException(nameof(dbConnection));
-            
-            _integrationEventLogContext = new IntegrationEventLogContext(
-                new DbContextOptionsBuilder<IntegrationEventLogContext>()
-                    .UseSqlServer(_dbConnection)
-                    .Options);
+            _integrationEventLogContext = dbContext;
 
             //TODO: Criar extensão de configuração para cadastrar eventos externos
             //_eventTypes = Assembly.Load(Assembly.GetEntryAssembly().FullName)
@@ -49,22 +42,22 @@ namespace IntegrationEventLogEF.Services
 
 
         public async Task MarkEventAsPublishedAsync(Guid eventId, CancellationToken cancellationToken) =>
-            await UpdateEventStatus(eventId, EventStateEnum.Published, cancellationToken);
+            await UpdateEventStatusAsync(eventId, EventStateEnum.Published, cancellationToken);
 
 
         public async Task MarkEventPublishAsFailedAsync(Guid eventId, CancellationToken cancellationToken) =>
-            await UpdateEventStatus(eventId, EventStateEnum.PublishFailed, cancellationToken);
+            await UpdateEventStatusAsync(eventId, EventStateEnum.PublishFailed, cancellationToken);
 
 
-        private Task UpdateEventStatus(Guid eventId, EventStateEnum status, CancellationToken cancellationToken)
+        private async Task UpdateEventStatusAsync(Guid eventId, EventStateEnum status, CancellationToken cancellationToken)
         {
-            var eventLogEntry = _integrationEventLogContext.IntegrationEventLogs.Single(ie => ie.EventId == eventId);
+            var eventLogEntry = await _integrationEventLogContext.IntegrationEventLogs.SingleAsync(ie => ie.EventId == eventId, cancellationToken);
             eventLogEntry.State = status;
+            eventLogEntry.TimesSent++;
 
             _integrationEventLogContext.IntegrationEventLogs.Update(eventLogEntry);
 
-            _integrationEventLogContext.SaveChanges();
-            return Task.CompletedTask;
+            await _integrationEventLogContext.SaveChangesAsync(cancellationToken);
         }
 
 
@@ -89,13 +82,11 @@ namespace IntegrationEventLogEF.Services
                 .Take(maxCount)
                 .ToListAsync(cancellationToken);
 
-            if (result != null && result.Any())
-            {
-                return result.OrderBy(o => o.CreationTime)
-                    .Select(e => e.DeserializeJsonContent(_eventTypes.Find(t => t.Name == e.EventTypeShortName)));
-            }
+            if (result == null)
+                return new List<IntegrationEventLogEntry>();
 
-            return new List<IntegrationEventLogEntry>();
+            return result.OrderBy(o => o.CreationTime)
+                         .Select(e => e.DeserializeJsonContent(_eventTypes.Find(t => t.Name == e.EventTypeShortName)));
         }
 
 

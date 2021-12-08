@@ -1,9 +1,11 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
+#nullable disable
+
 namespace IntegrationEventLogEF.Migrations
 {
-    public partial class firstmigration : Migration
+    public partial class firstMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -13,6 +15,7 @@ namespace IntegrationEventLogEF.Migrations
                 {
                     EventId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     EventTypeName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TimesSent = table.Column<int>(type: "int", nullable: false),
                     State = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: false),

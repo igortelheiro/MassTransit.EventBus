@@ -18,9 +18,8 @@ public sealed class MassTransitEventBus : IEventBus
     }
 
 
-    public async Task PublishAsync<TEvent>(TEvent @event)
-        where TEvent : IntegrationEvent =>
-            await _bus.Publish(@event).ConfigureAwait(false);
+    public async Task PublishAsync(dynamic @event, CancellationToken cancellationToken) =>
+        await _bus.Publish(@event, cancellationToken).ConfigureAwait(false);
 
 
     public void Subscribe<T, TH>()

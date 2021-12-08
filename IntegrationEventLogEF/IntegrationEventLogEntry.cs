@@ -1,10 +1,8 @@
-﻿using System;
+﻿using EventBus.Core.Events;
+using System;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text.Json;
-using System.Text.Json.Serialization;
-using EventBus.Core.Events;
-using Newtonsoft.Json.Converters;
 
 namespace IntegrationEventLogEF
 {
@@ -21,6 +19,7 @@ namespace IntegrationEventLogEF
                 WriteIndented = true
             });
             IntegrationEvent = @event;
+            TimesSent = 0;
             State = EventStateEnum.NotPublished;
             TransactionId = transactionId.ToString();
         }
@@ -30,6 +29,7 @@ namespace IntegrationEventLogEF
         public string EventTypeShortName => EventTypeName.Split('.')?.Last();
         [NotMapped]
         public IntegrationEvent IntegrationEvent { get; private set; }
+        public int TimesSent { get; set; }
         public EventStateEnum State { get; set; }
         public DateTime CreationTime { get; private set; }
         public string Content { get; private set; }

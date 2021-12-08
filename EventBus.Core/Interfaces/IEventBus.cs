@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using EventBus.Core.Events;
 
 namespace EventBus.Core.Interfaces
@@ -7,8 +8,7 @@ namespace EventBus.Core.Interfaces
     {
         //TODO: implementar params (usando MassTransit.TransactionalEnlistmentBus)
         //Task PublishAsync<TEvent>(params TEvent[] @event)
-        Task PublishAsync<TEvent>(TEvent @event)
-            where TEvent : IntegrationEvent;
+        Task PublishAsync(dynamic @event, CancellationToken cancellationToken);
 
         void Subscribe<T, TH>()
             where T : IntegrationEvent
