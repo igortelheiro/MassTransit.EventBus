@@ -2,7 +2,7 @@
 using MassTransit.EventBus.Core;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace RabbitMQEventBus.Configuration;
+namespace RabbitMQEventBus;
 
 public static class RabbitMQEventBusConfiguration
 {
