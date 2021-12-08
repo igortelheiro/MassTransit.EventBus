@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31515.178
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31912.275
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EventBus.Core", "EventBus.Core\EventBus.Core.csproj", "{CEFDDE52-8DBA-4ACC-A74E-07161C42A834}"
 EndProject
@@ -10,6 +10,16 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntegrationEventLogEF", "IntegrationEventLogEF\IntegrationEventLogEF.csproj", "{67826E8B-BF30-4CD4-A26B-A24AE0CE7B12}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RabbitMQEventBus", "RabbitMQEventBus\RabbitMQEventBus.csproj", "{00B34096-BEE2-445F-9282-D659C1FD89BD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzureEventBus", "AzureEventBus\AzureEventBus.csproj", "{FEDD76A5-15D1-4820-89BE-A59FEF9E496F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MassTransit.EventBus.Core", "MassTransitEventBus.Core\MassTransit.EventBus.Core.csproj", "{C36C818F-CA10-4042-9CF0-4C956F6DD395}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{C89707EA-8864-4E40-9E5D-69F4C0AAA334}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{78156E6F-1EB7-4D2D-A699-AD6BCF977E0D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Integrations", "Integrations", "{9529FF31-2721-441D-A55F-DAFC99CD0D7D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,9 +43,24 @@ Global
 		{00B34096-BEE2-445F-9282-D659C1FD89BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{00B34096-BEE2-445F-9282-D659C1FD89BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{00B34096-BEE2-445F-9282-D659C1FD89BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FEDD76A5-15D1-4820-89BE-A59FEF9E496F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FEDD76A5-15D1-4820-89BE-A59FEF9E496F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FEDD76A5-15D1-4820-89BE-A59FEF9E496F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FEDD76A5-15D1-4820-89BE-A59FEF9E496F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C36C818F-CA10-4042-9CF0-4C956F6DD395}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C36C818F-CA10-4042-9CF0-4C956F6DD395}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C36C818F-CA10-4042-9CF0-4C956F6DD395}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C36C818F-CA10-4042-9CF0-4C956F6DD395}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{CEFDDE52-8DBA-4ACC-A74E-07161C42A834} = {C89707EA-8864-4E40-9E5D-69F4C0AAA334}
+		{3C80DACA-CD14-4DBB-B4D0-930A022D18A9} = {78156E6F-1EB7-4D2D-A699-AD6BCF977E0D}
+		{00B34096-BEE2-445F-9282-D659C1FD89BD} = {9529FF31-2721-441D-A55F-DAFC99CD0D7D}
+		{FEDD76A5-15D1-4820-89BE-A59FEF9E496F} = {9529FF31-2721-441D-A55F-DAFC99CD0D7D}
+		{C36C818F-CA10-4042-9CF0-4C956F6DD395} = {C89707EA-8864-4E40-9E5D-69F4C0AAA334}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2710A732-B908-4E64-A23F-8EEAF4221417}

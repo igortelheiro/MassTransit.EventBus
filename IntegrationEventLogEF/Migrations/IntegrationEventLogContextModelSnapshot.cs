@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
+#nullable disable
+
 namespace IntegrationEventLogEF.Migrations
 {
     [DbContext(typeof(IntegrationEventLogContext))]
@@ -15,9 +17,10 @@ namespace IntegrationEventLogEF.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.11")
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("ProductVersion", "6.0.0")
+                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
             modelBuilder.Entity("IntegrationEventLogEF.IntegrationEventLogEntry", b =>
                 {
@@ -40,12 +43,15 @@ namespace IntegrationEventLogEF.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("TimesSent")
+                        .HasColumnType("int");
+
                     b.Property<string>("TransactionId")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("EventId");
 
-                    b.ToTable("IntegrationEventLog");
+                    b.ToTable("IntegrationEventLog", (string)null);
                 });
 #pragma warning restore 612, 618
         }
